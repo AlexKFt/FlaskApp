@@ -3,64 +3,55 @@ from io_handlers.console_io import ConsoleIO
 from storage.pickle_storage import PickleStorage
 
 class Group:
-    def __init__(self):
-        self.students = list()
-        self.io_strategy = ConsoleIO()
-        self.storage_strategy = PickleStorage()
+    def __init__(self, io_strategy):
+        self.io_strategy = io_strategy
+        self.storage = PickleStorage()
         self.classes = {
             "1": Student,
             "2": Leeder
         }
 
-    def add(self):
-        print("Выберите тип объекта: 1 - Студент, 2 - Староста")
-        choice = input("Ваш выбор: ")
-        cls = self.classes.get(choice)
+    def Add(self, type):
+        """
+        Добавляе объект в соотвтествии с кодом типа
+        type: 1 - Студент, 2 - Староста
+        """
+        cls = self.classes.get(type)
         if cls:
             student = cls()
             student.set_io(self.io_strategy)
             student.input()
-            self.students.append(student)
-            print("Объект добавлен.")
-        else:
-            print("Неверный выбор.")
+            self.storage.Add(student)
 
-    def show_items(self):
-        if not self.students:
-            print("Список пуст.")
-        for i, student in enumerate(self.students, 1):
-            print(f"{i})", end=' ')
-            student.print()
+    def ShowItems(self):
+        if not self.storage.items:
+            self.io_strategy.info("Список пуст.")
+        for item in self.storage.GetItems():
+            item.Show()
 
-    def delete_item(self):
-        self.show_items()
-        idx = int(input("Введите номер объекта для удаления: ")) - 1
-        if 0 <= idx < len(self.students):
-            del self.students[idx]
-            print("Удалено.")
-        else:
-            print("Ошибка индекса.")
+    def ShowItem(self, id):
+        item = self.storage.GetItem(id)
+        item.Show()
 
-    def edit_item(self):
-        self.show_items()
-        idx = int(input("Введите номер объекта для редактирования: ")) - 1
-        if 0 <= idx < len(self.students):
-            self.students[idx].input()
-            print("Объект изменен.")
-        else:
-            print("Ошибка индекса.")
+    def Delete(self, id):
+        self.storage.Delete(id)
 
-    def save_to_file(self):
-        self.storage_strategy.save(self.students)
-        print("Сохранено.")
+    def Edit(self, id):
+        item = self.storage.GetItem(id)
+        if item:
+            item.input()
 
-    def load_from_file(self):
+    def Save(self):
+        self.storage.Store()
+        self.io_strategy.info("Сохранено.")
+
+    def Load(self):
         try:
-            self.students = self.storage_strategy.load()
-            print("Загружено.")
+            self.storage.Load()
+            self.io_strategy.info("Загружено.")
         except FileNotFoundError:
-            print("Файл не найден.")
+            self.io_strategy.info("Файл не найден.")
 
-    def clear_items(self):
-        self.students.clear()
-        print("Список очищен.")
+    def Clear(self):
+        self.storage.Clear()
+        self.io_strategy.info("Список очищен.")

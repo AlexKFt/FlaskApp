@@ -12,6 +12,6 @@ class Leeder(Student):
         super().input()
         self.group = self.io_strategy.read("group")
 
-    def print(self):
-        super().print()
+    def show(self):
+        super().show()
         self.io_strategy.write("group", self.group)

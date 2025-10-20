@@ -3,13 +3,13 @@ from container import Group
 def main():
     c = Group()
     menu = {
-        "1": c.add,
-        "2": c.edit_item,
-        "3": c.delete_item,
-        "4": c.show_items,
-        "5": c.save_to_file,
-        "6": c.load_from_file,
-        "7": c.clear_items,
+        "1": c.Add,
+        "2": c.Edit(),
+        "3": c.Delete(),
+        "4": c.ShowItems(),
+        "5": c.Save(),
+        "6": c.Load(),
+        "7": c.Clear(),
         "0": exit,
     }
 

@@ -8,7 +8,7 @@ class Student:
     def set_io(self, io):
         self.io_strategy = io
 
-    def _validate_age(self, age_str):
+    def validate_age(self, age_str):
         if not age_str.isdigit():
             return 18
         age = int(age_str)
@@ -19,9 +19,9 @@ class Student:
             return
 
         self.name = self.io_strategy.read("name")
-        self.age = self._validate_age(self.io_strategy.read("age"))
+        self.age = self.validate_age(self.io_strategy.read("age"))
 
-    def print(self):
+    def show(self):
         if self.io_strategy:
             self.io_strategy.write("name", self.name)
             self.io_strategy.write("age", self.age)
