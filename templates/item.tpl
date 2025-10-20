@@ -1,6 +1,7 @@
-Author: {{author}}<br>
-Title: {{title}}<br>
-{{body}}<br>
-<a href="/showform/{{id}}">Edit</a>
-<a href="/delete/{{id}}">Delete</a>
+Name: {{it.name}}<br>
+Age: {{it.age}}<br>
+
+{{it.body}}<br>
+<a href="/showform/{{it.id}}">Edit</a>
+<a href="/delete/{{it.id}}">Delete</a>
 <br><br>

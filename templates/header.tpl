@@ -1,1 +1,1 @@
-<html><head><title>My Book</title></head><body>My Book:
+<html><head><title>Group</title></head><body>My Group:

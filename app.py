@@ -18,20 +18,20 @@ def GetGroup():
     return g.group
 
 @app.route("/")
-def book_index():
-    return GetGroup().ShowItems()
+def group_index():
+    return render_template('group.tpl', items=g.group.GetItems())
 
 @app.route("/showform/<int:id>")
 def show_form(id):
-    return GetGroup().Show(id)
+    return GetGroup().ShowItem(id)
 
 @app.route("/delete/<int:id>")
 def delete_item(id):
     return GetGroup().Delete(id)
 
 @app.route("/add", methods=['POST'])
-def add():
-    return GetGroup().Add()
+def add(type):
+    return GetGroup().Add(type)
 
 @app.teardown_appcontext
 def teardown_book(ctx):
