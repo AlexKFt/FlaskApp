@@ -1,16 +1,15 @@
 import pickle
-from container import Group, Student
+from container import Student
 
 class PickleStorage:
-    def __init__(self, group):
-        self.group = group
+    def __init__(self):
         try:
             self.Load()
         except:
             self.items = {}
             self.maxid = 0
 
-    def Store(self, data):
+    def Store(self):
         with open("data.dat", "wb") as f:
             pickle.dump((self.maxid, self.items), f)
 

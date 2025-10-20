@@ -15,11 +15,11 @@ def GetGroup():
     if 'group' not in g:
         io_strategy = WebIO()
         g.group = Group(io_strategy)
-    return g.book
+    return g.group
 
 @app.route("/")
 def book_index():
-    return GetGroup()
+    return GetGroup().ShowItems()
 
 @app.route("/showform/<int:id>")
 def show_form(id):
