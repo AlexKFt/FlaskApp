@@ -1,6 +1,6 @@
-from models.leeder import Leeder, Student
+from models.leeder import Leeder
 from io_handlers.console_io import ConsoleIO
-from storage.pickle_storage import PickleStorage
+from storage.pickle_storage import PickleStorage, Student
 
 class Group:
     def __init__(self, io_strategy):
@@ -11,16 +11,16 @@ class Group:
             "2": Leeder
         }
 
-    def Add(self, type):
+    def Add(self, student):
         """
         Добавляе объект в соотвтествии с кодом типа
         type: 1 - Студент, 2 - Староста
         """
-        cls = self.classes.get(type)
-        if cls:
-            student = cls()
-            student.set_io(self.io_strategy)
-            student.input()
+        # cls = self.classes.get(type)
+        if student:
+            # student = cls()
+            # student.set_io(self.io_strategy)
+            # student.input()
             self.storage.Add(student)
 
     def ShowItems(self):
@@ -28,6 +28,9 @@ class Group:
             self.io_strategy.info("Список пуст.")
         for item in self.storage.GetItems():
             item.Show()
+
+    def show_students(self):
+        return self.storage.items;
 
     def ShowItem(self, id):
         item = self.storage.GetItem(id)
