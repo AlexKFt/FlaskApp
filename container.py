@@ -1,6 +1,5 @@
-from models.leeder import Leeder
-from io_handlers.console_io import ConsoleIO
-from storage.pickle_storage import PickleStorage, Student
+from models.leeder import Leeder, Student
+from storage.pickle_storage import PickleStorage
 
 class Group:
     def __init__(self, io_strategy):
@@ -32,9 +31,8 @@ class Group:
     def show_students(self):
         return self.storage.items;
 
-    def ShowItem(self, id):
-        item = self.storage.GetItem(id)
-        item.Show()
+    def GetItem(self, id):
+        return self.storage.GetItem(id)
 
     def Delete(self, id):
         self.storage.Delete(id)

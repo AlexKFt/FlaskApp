@@ -1,5 +1,5 @@
 import pickle
-from container import Student
+from models.student import Student
 
 class PickleStorage:
     def __init__(self):
@@ -16,6 +16,7 @@ class PickleStorage:
     def Load(self):
         with open("data.dat", "rb") as f:
             (self.maxid, self.items) = pickle.load(f)
+            print(self.maxid)
 
     def GetItem(self, id):
         if id <= 0:
@@ -24,11 +25,14 @@ class PickleStorage:
             return self.items[id]
 
     def Add(self, item):
-        self.maxid += 1
-        self.items[self.maxid] = item
+        if item.id <= 0:
+            self.maxid += 1
+            item.id = self.maxid
+            self.items[self.maxid] = item
 
     def Delete(self, id):
-        del self.items[id]
+        if id in self.items:
+            del self.items[id]
 
     def GetItems(self):
         for (id, item) in self.items.items():

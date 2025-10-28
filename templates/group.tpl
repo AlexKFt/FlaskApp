@@ -1,7 +1,7 @@
 {% extends "base.tpl" %}
 
 {% block content %}
-    {% for it in items %}
+    {% for student in students %}
 {% include "item.tpl" ignore missing %}
     {% else %}
 Group is empty
