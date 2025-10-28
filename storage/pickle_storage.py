@@ -19,10 +19,10 @@ class PickleStorage:
             print(self.maxid)
 
     def GetItem(self, id):
-        if id <= 0:
-            return Student()
-        else:
+        if id in self.items:
             return self.items[id]
+        else:
+            return None
 
     def Add(self, item):
         if item.id <= 0:

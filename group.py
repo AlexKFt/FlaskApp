@@ -1,32 +1,46 @@
 from io_handlers.io_handler import IOHandler
 from models_v2.person import Person
+from storage.pickle_storage import PickleStorage
 
 
 class Company:
     def __init__(self, io_handler: IOHandler):
+        self.storage = PickleStorage()
         self.people = {}
         self.maxid = 0
         self.io_handler = io_handler
 
-    def add(self, person):
-        if person.id <= 0:
-            self.maxid += 1
-            person.id = self.maxid
-            self.people[self.maxid] = person
+    def Add(self, person):
+        self.storage.Add(person)
 
-    def create_and_add(self, cls):
+    def CreateAndAdd(self, cls):
         obj = cls.load(self.io_handler)
         self.add(obj)
 
-    def get_item(self, id):
-        if id in self.people:
-            return self.people[id]
-        else:
-            return None
+    def GetItem(self, id):
+        return self.storage.GetItem(id)
 
-    def get_items(self):
+    def Delete(self, id):
+        self.storage.Delete(id)
+
+    def GetItems(self):
         for (key, value) in self.people.items():
             yield value
+
+    def Save(self):
+        self.storage.Store()
+        self.io_handler.info("Сохранено.")
+
+    def Load(self):
+        try:
+            self.storage.Load()
+            self.io_handler.info("Данные загружены.")
+        except FileNotFoundError:
+            self.io_handler.info("Ошибка чтения файла с данными")
+
+    def Clear(self):
+        self.storage.Clear()
+        self.io_handler.info("Список очищен.")
 
     def __len__(self):
         return len(self.people)
