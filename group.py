@@ -6,7 +6,6 @@ from storage.pickle_storage import PickleStorage
 class Company:
     def __init__(self, io_handler: IOHandler):
         self.storage = PickleStorage()
-        self.people = {}
         self.maxid = 0
         self.io_handler = io_handler
 
@@ -24,8 +23,7 @@ class Company:
         self.storage.Delete(id)
 
     def GetItems(self):
-        for (key, value) in self.people.items():
-            yield value
+        self.storage.GetItems()
 
     def Save(self):
         self.storage.Store()
