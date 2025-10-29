@@ -1,6 +1,7 @@
 from io_handlers.io_handler import IOHandler
-from models_v2.Director import Director
-from models_v2.Worker import Worker
+from models_v2.director import Director
+from models_v2.worker import Worker
+from models_v2.person import Person
 
 
 class ConsoleIOHandler(IOHandler):
@@ -16,4 +17,17 @@ class ConsoleIOHandler(IOHandler):
             department = input("Департамент: ")
             return Director(name, age, department, io_handler=self)
         else:
-            return "Неизвестный тип объекта."
+            return Person(name, age, io_handler=self)
+
+
+    def write(self, obj):
+        print(f"Имя: {obj.name}")
+        print(f"Возраст: {obj.age}")
+
+        if obj is Worker:
+            print(f"Должность: {obj.position}")
+        elif obj is Director:
+            print(f"Департамент: {obj.department}")
+
+    def info(self, message):
+        print(message)

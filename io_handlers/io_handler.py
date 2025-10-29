@@ -6,8 +6,8 @@ class IOHandler(ABC):
         pass
 
     @abstractmethod
-    def write(self, cls):
+    def write(self, value):
         pass
 
-    def info(self, cls):
+    def info(self, message):
         pass

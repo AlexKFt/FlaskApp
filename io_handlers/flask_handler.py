@@ -1,12 +1,14 @@
 from pickletools import read_uint1
 
 from io_handlers.io_handler import IOHandler
-from models_v2.Director import Director
-from models_v2.Worker import Worker
+from models_v2.director import Director
+from models_v2.worker import Worker
+from models_v2.person import Person
+from flask import request
+
 
 class FlaskIOHandler(IOHandler):
     def read(self, cls):
-        from flask import request
         data = request.form
         name = data.get("name")
         age = int(data.get("age"))
@@ -16,7 +18,10 @@ class FlaskIOHandler(IOHandler):
         elif cls is Director:
             return Director(name, age, data.get("department", ""), io_handler=self)
         else:
-            return "Неизвестный тип объекта."
+            return Person(name, age, io_handler=self)
 
     def write(self, obj):
         return f"<p>{obj}</p>"
+
+    def info(self, message):
+        return f"<p>info: {message}</p>"

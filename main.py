@@ -1,15 +1,29 @@
-from container import Group
+from group import Group
+from io_handlers.console_handler import ConsoleIOHandler
+
+
 
 def main():
-    c = Group()
+    group = Group(ConsoleIOHandler())
+
+    def add_item():
+        for type, value in group.classes.items():
+            print(f"{type}: {value}")
+        id = input("Выберите тип: ")
+        if id in group.classes:
+            cls = group.classes[id]
+            group.add(cls)
+        else:
+            print("Введено некорректное значение")
+
     menu = {
-        "1": c.Add,
-        "2": c.Edit(),
-        "3": c.Delete(),
-        "4": c.ShowItems(),
-        "5": c.Save(),
-        "6": c.Load(),
-        "7": c.Clear(),
+        "1": add_item,
+        "2": group.edit,
+        "3": group.delete,
+        "4": group.get_items,
+        "5": group.save,
+        "6": group.load,
+        "7": group.clear,
         "0": exit,
     }
 
