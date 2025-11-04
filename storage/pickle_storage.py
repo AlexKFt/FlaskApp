@@ -4,7 +4,7 @@ from models.student import Student
 class PickleStorage:
     def __init__(self):
         try:
-            self.Load()
+            self.load()
         except:
             self.items = {}
             self.maxid = 0

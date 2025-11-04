@@ -1,6 +1,6 @@
-from io_handlers.flask_io import FlaskIO
+from io_handlers.flask_handler import FlaskIOHandler
 
-from container import Group
+from group import Group
 
 from flask import Flask, request
 from flask import render_template
@@ -11,31 +11,29 @@ app = Flask(__name__)
 
 def GetGroup():
     if 'group' not in g:
-        g.group = Group(io_strategy=None)
-        g.flask_io = FlaskIO(g.group)
-        g.group.io_strategy = g.flask_io
+        g.group = Group(io_handler=FlaskIOHandler())
     return g.group
 
 
 @app.route("/")
 def index():
     group = GetGroup()
-    return render_template("group.tpl", students=group.storage.GetItems())
+    return render_template("group.tpl", students=group.get_items())
 
 
 @app.route("/showform/<int:id>")
 def show_form(id):
     group = GetGroup()
-    item = group.GetItem(id)
-    item.set_io(group.io_strategy)
+    item = group.get_item(id)
+    item.set_io(group.io_handler)
     return render_template("student_form.tpl", student=item)
 
 
 @app.route("/delete/<int:id>")
 def delete_item(id):
     group = GetGroup()
-    group.Delete(id)
-    return render_template("group.tpl", students=group.storage.GetItems())
+    group.delete(id)
+    return render_template("group.tpl", students=group.get_items())
 
 
 @app.route("/add", methods=['POST'])
@@ -43,19 +41,19 @@ def add():
     type = request.form['obj_class']
     group = GetGroup()
     cls = group.classes.get(type)
-    student = group.GetItem(int (request.form.get("id", 0)))
+    student = group.get_item(int (request.form.get("id", 0)))
 
-    student.set_io(group.io_strategy)
+    student.set_io(group.io_handler)
     student.io_strategy.data = request.form
     student.input()
 
-    group.Add(student)
-    return render_template("group.tpl", students=group.storage.GetItems())
+    group.add(student)
+    return render_template("group.tpl", students=group.get_items())
 
 
 @app.teardown_appcontext
 def teardown_book(ctx):
-    GetGroup().storage.Store()
+    GetGroup().storage.store()
 
 if __name__ == "__main__":
     app.run(debug=True)
