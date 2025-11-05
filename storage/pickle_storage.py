@@ -1,5 +1,4 @@
 import pickle
-from models.student import Student
 
 class PickleStorage:
     def __init__(self):
@@ -16,7 +15,6 @@ class PickleStorage:
     def load(self):
         with open("data.dat", "rb") as f:
             (self.maxid, self.items) = pickle.load(f)
-            print(self.maxid)
 
     def get_item(self, id):
         if id in self.items:
@@ -29,6 +27,8 @@ class PickleStorage:
             self.maxid += 1
             item.id = self.maxid
             self.items[self.maxid] = item
+        elif item.id in self.items:
+            self.items[item.id] = item
 
     def edit(self, item):
         if item.id in self.items:

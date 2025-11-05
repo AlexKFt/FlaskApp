@@ -21,13 +21,16 @@ class ConsoleIOHandler(IOHandler):
 
 
     def write(self, obj):
+        print(f"Id: {obj.id}")
         print(f"Имя: {obj.name}")
         print(f"Возраст: {obj.age}")
 
-        if obj is Worker:
+        if type(obj) is Worker:
             print(f"Должность: {obj.position}")
-        elif obj is Director:
+        elif type(obj) is Director:
             print(f"Департамент: {obj.department}")
+        print('\n')
+
 
     def info(self, message):
         print(message)

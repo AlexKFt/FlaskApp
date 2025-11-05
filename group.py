@@ -17,7 +17,7 @@ class Group:
 
     def add(self, cls):
         person = cls(io_handler=self.io_handler)
-        cls.input(cls)
+        person = person.input()
         self.storage.add(person)
 
     def edit(self, person):
@@ -30,7 +30,7 @@ class Group:
         self.storage.delete(id)
 
     def get_items(self):
-        self.storage.get_items()
+        return self.storage.get_items()
 
     def show_items(self):
         for item in self.storage.get_items():

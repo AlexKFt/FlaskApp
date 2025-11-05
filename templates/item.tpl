@@ -1,6 +1,12 @@
-Name: {{student.name}}<br>
-Age: {{student.age}}<br>
-Id: {{student.id}}<br>
-<a href="/showform/{{student.id}}">Edit</a>
-<a href="/delete/{{student.id}}">Delete</a>
+Имя: {{person.name}}<br>
+Возраст: {{person.age}}<br>
+Id: {{person.id}}<br>
+{%if person is instanceof('Worker')%}
+    Должность: {{person.position}}
+{% endif %}
+{%if person is instanceof('Director')%}
+    Отдел: {{person.department}}
+{% endif %}
+<a href="/edit/{{person.id}}">Edit</a>
+<a href="/delete/{{person.id}}">Delete</a>
 <br><br>

@@ -8,7 +8,7 @@ def main():
 
     def add_item():
         for type, value in group.classes.items():
-            print(f"{type}: {value}")
+            print(f"{type}: {value.__name__}")
         id = input("Выберите тип: ")
         if id in group.classes:
             cls = group.classes[id]
@@ -16,11 +16,24 @@ def main():
         else:
             print("Введено некорректное значение")
 
+    def edit_item():
+        id = int(input("Введите id сотрудника:"))
+        item = group.get_item(id)
+        if item is not None:
+            item.io_handler = ConsoleIOHandler()
+            group.edit(item.input())
+        else:
+            print("Введено некорректное значение")
+
+    def delete_item():
+        id = int(input("Введите id сотрудника:"))
+        group.delete(id)
+
     menu = {
         "1": add_item,
-        "2": group.edit,
-        "3": group.delete,
-        "4": group.get_items,
+        "2": edit_item,
+        "3": delete_item,
+        "4": group.show_items,
         "5": group.save,
         "6": group.load,
         "7": group.clear,
