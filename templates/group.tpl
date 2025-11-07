@@ -7,7 +7,7 @@
 Group is empty
     {% endfor %}
 
-{% include "add_person.tpl" ignore missing %}
-{% include "add_worker.tpl" ignore missing %}
-{% include "add_director.tpl" ignore missing %}
+{% include "add_student.tpl" ignore missing %}
+{% include "add_leader.tpl" ignore missing %}
+
 {% endblock %}

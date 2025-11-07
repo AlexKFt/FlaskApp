@@ -1,23 +1,29 @@
+import copy
+
 from io_handlers.io_handler import IOHandler
-from models_v2.person import Person
-from models_v2.worker import Worker
-from models_v2.director import Director
+from models.student import Student
+from models.leader import Leader
 from storage.pickle_storage import PickleStorage
 
 
 class Group:
     def __init__(self, io_handler: IOHandler):
         self.storage = PickleStorage()
-        self.io_handler = io_handler
+        self.io_handler = None
+        self.set_io_handler(io_handler)
         self.classes = {
-            "1": Person,
-            "2": Worker,
-            "3": Director
+            "1": Student,
+            "2": Leader
         }
+
+    def set_io_handler(self, io_handler: IOHandler):
+        self.io_handler = io_handler
+        for item in self.storage.get_items():
+            item.io_handler = copy.deepcopy(io_handler)
 
     def add(self, cls):
         person = cls(io_handler=self.io_handler)
-        person = person.input()
+        person.input()
         self.storage.add(person)
 
     def edit(self, person):
@@ -35,6 +41,7 @@ class Group:
     def show_items(self):
         for item in self.storage.get_items():
             item.show()
+
 
     def save(self):
         self.storage.store()

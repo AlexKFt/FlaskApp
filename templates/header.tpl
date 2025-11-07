@@ -1,1 +1,5 @@
-<html><head><title>Group</title></head><body>My Group:
+<html>
+<head>
+<title>Group</title>
+</head>
+<body><h1>Студенты:</h1>

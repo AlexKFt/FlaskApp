@@ -8,9 +8,8 @@ from flask import Flask, request
 from flask import render_template
 from flask import g
 
-from models_v2.director import Director
-from models_v2.person import Person
-from models_v2.worker import Worker
+from models.student import Student
+from models.leader import Leader
 
 app = Flask(__name__)
 
@@ -19,7 +18,8 @@ app = Flask(__name__)
 def is_instanceof(value, type_name):
     return value.__class__.__name__ == type_name
 
-def GetGroup():
+
+def get_group():
     if 'group' not in g:
         g.group = Group(io_handler=FlaskIOHandler())
     return g.group
@@ -27,49 +27,55 @@ def GetGroup():
 
 @app.route("/")
 def index():
-    group = GetGroup()
+    group = get_group()
+    group.show_items()
     return render_template("group.tpl", group=group.get_items())
 
 
 @app.route("/showform/<int:id>")
 def show_form(id):
-    group = GetGroup()
+    group = get_group()
     if id == 1:
-        person = Person(io_handler=group.io_handler)
-        return render_template("person_form.tpl", person=person)
+        person = Student(io_handler=group.io_handler)
+        return render_template("student_form.tpl", person=person)
     elif id == 2:
-        worker = Worker(io_handler=group.io_handler)
-        return render_template("worker_form.tpl", person=worker)
-    elif id == 3:
-        director = Director(io_handler=group.io_handler)
-        return render_template("director_form.tpl", person=director)
+        worker = Leader(io_handler=group.io_handler)
+        return render_template("leader_form.tpl", person=worker)
     else:
         return render_template("group.tpl", group=group.get_items())
 
-
-@app.route("/edit/<int:id>")
-def edit_item(id):
-    group = GetGroup()
+@app.route("/edit_form/<int:cls_id>/<int:id>")
+def edit_form(cls_id, id):
+    group = get_group()
     person = group.get_item(id)
-    if type(person) is Director:
-        return render_template("director_form.tpl", person=person)
-    elif type(person) is Worker:
-        return render_template("worker_form.tpl", person=person)
+    person.io_handler = group.io_handler
+    if cls_id == 1:
+        return render_template("student_form.tpl", person=person)
+    elif cls_id == 2:
+        return render_template("leader_form.tpl", person=person)
     else:
-        return render_template("person_form.tpl", person=person)
+        return render_template("group.tpl", group=group.get_items())
+
+@app.route("/edit", methods=['POST'])
+def edit_item():
+    id = int(request.form.get("id"))
+    group = get_group()
+    person =group.get_item(id)
+    person.input()
+    group.edit(person)
+    return redirect("/")
 
 @app.route("/delete/<int:id>")
 def delete_item(id):
-    group = GetGroup()
+    group = get_group()
     group.delete(id)
     return redirect("/")
 
 
 @app.route("/add", methods=['POST'])
 def add():
-
     type = request.form['obj_class']
-    group = GetGroup()
+    group = get_group()
     cls = group.classes.get(type)
     group.add(cls)
 
@@ -78,7 +84,7 @@ def add():
 
 @app.teardown_appcontext
 def teardown_book(ctx):
-    GetGroup().storage.store()
+    get_group().storage.store()
 
 if __name__ == "__main__":
     app.run(debug=True)

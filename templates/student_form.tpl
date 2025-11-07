@@ -1,9 +1,12 @@
 {% extends "base.tpl" %}
 
 {% block content %}
-<h2>{{person.show()}}</h2>
 
-<form action = '/add' method=POST>
+{% if person.id != 0%}
+    <form action = '/edit' method=Post>
+{% else %}
+    <form action = '/add' method=POST>
+{% endif %}
 
 <input type="hidden" name=obj_class value="1">
 

@@ -21,7 +21,8 @@ def main():
         item = group.get_item(id)
         if item is not None:
             item.io_handler = ConsoleIOHandler()
-            group.edit(item.input())
+            item.input()
+            group.edit(item)
         else:
             print("Введено некорректное значение")
 
