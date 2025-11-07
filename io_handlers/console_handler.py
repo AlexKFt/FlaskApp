@@ -19,7 +19,6 @@ class ConsoleIOHandler(IOHandler):
         else:
             return Person(name, age, io_handler=self)
 
-
     def write(self, obj):
         print(f"Id: {obj.id}")
         print(f"Имя: {obj.name}")
