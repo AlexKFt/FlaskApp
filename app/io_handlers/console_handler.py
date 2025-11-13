@@ -1,8 +1,8 @@
-from io_handlers.io_handler import IOHandler
+from app.io_handlers.io_handler import IOHandler
 
 class ConsoleIOHandler(IOHandler):
     def read(self, field):
-        return input(f"Введите {field}")
+        return input(f"Введите {field}: ")
 
     def write(self, title, value):
         print(f"{title}: {value}")

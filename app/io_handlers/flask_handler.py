@@ -1,15 +1,13 @@
-from io_handlers.io_handler import IOHandler
-
-from flask import request
+from app.io_handlers.io_handler import IOHandler
 
 
 class FlaskIOHandler(IOHandler):
-    def __init__(self):
+    def __init__(self, request):
+        self.form = request.form
         self.output = []
 
     def read(self, field):
-        data = request.form
-        return data.get(field, "")
+        return self.form.get(field, "")
 
     def write(self, title, value):
         self.output.append(f"<p>{title}: {value}</p>")

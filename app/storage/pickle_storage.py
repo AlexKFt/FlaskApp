@@ -1,5 +1,9 @@
 import pickle
 
+from app.storage.db_storage import selfpath
+
+bin_path = 'data/pickle/'
+
 class PickleStorage:
     def __init__(self):
         try:
@@ -9,11 +13,11 @@ class PickleStorage:
             self.maxid = 0
 
     def store(self):
-        with open("data.dat", "wb") as f:
+        with open(bin_path+"data.dat", "wb") as f:
             pickle.dump((self.maxid, self.items), f)
 
     def load(self):
-        with open("data.dat", "rb") as f:
+        with open(bin_path+"data.dat", "rb") as f:
             (self.maxid, self.items) = pickle.load(f)
 
     def get_item(self, id):

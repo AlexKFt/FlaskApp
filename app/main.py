@@ -1,11 +1,10 @@
-from group import Group
-from io_handlers.console_handler import ConsoleIOHandler
+from app.group import Group
+from app.io_handlers.console_handler import ConsoleIOHandler
 
 
 
 def main():
     group = Group(ConsoleIOHandler())
-
     def add_item():
         for type, value in group.classes.items():
             print(f"{type}: {value.__name__}")

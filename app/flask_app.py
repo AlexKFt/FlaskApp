@@ -1,5 +1,6 @@
 from werkzeug.utils import redirect
 
+from app.storage.pickle_storage import PickleStorage
 from io_handlers.flask_handler import FlaskIOHandler
 
 from group import Group
@@ -21,7 +22,7 @@ def is_instanceof(value, type_name):
 
 def get_group():
     if 'group' not in g:
-        g.group = Group(io_handler=FlaskIOHandler())
+        g.group = Group(io_handler=FlaskIOHandler(request))
     return g.group
 
 
@@ -29,7 +30,7 @@ def get_group():
 def index():
     group = get_group()
     group.show_items()
-    return render_template("group.tpl", group=group.get_items())
+    return render_template("group.tpl", group=group.show_items())
 
 
 @app.route("/showform/<int:id>")
@@ -81,6 +82,14 @@ def add():
 
     return redirect("/")
 
+@app.route("/load_from_pickle")
+def load_from_pickle():
+    group = get_group()
+    storage = PickleStorage()
+    for item in storage.get_items():
+        item.id = 0
+        group.storage.add(item)
+    return redirect("/")
 
 @app.teardown_appcontext
 def teardown_book(ctx):

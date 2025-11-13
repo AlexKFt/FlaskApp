@@ -1,14 +1,14 @@
 import copy
 
-from io_handlers.io_handler import IOHandler
-from models.student import Student
-from models.leader import Leader
-from storage.pickle_storage import PickleStorage
+from app.io_handlers.io_handler import IOHandler
+from app.models.student import Student
+from app.models.leader import Leader
+from app.storage.db_storage import DBStorage
 
 
 class Group:
     def __init__(self, io_handler: IOHandler):
-        self.storage = PickleStorage()
+        self.storage = DBStorage(self)
         self.io_handler = None
         self.set_io_handler(io_handler)
         self.classes = {
@@ -18,8 +18,6 @@ class Group:
 
     def set_io_handler(self, io_handler: IOHandler):
         self.io_handler = io_handler
-        for item in self.storage.get_items():
-            item.io_handler = copy.deepcopy(io_handler)
 
     def add(self, cls):
         person = cls(io_handler=self.io_handler)
@@ -36,12 +34,18 @@ class Group:
         self.storage.delete(id)
 
     def get_items(self):
-        return self.storage.get_items()
+        for item in self.storage.get_items():
+            item.io_handler = copy.deepcopy(self.io_handler)
+            yield item
+
 
     def show_items(self):
+        items = []
         for item in self.storage.get_items():
+            item.io_handler = copy.deepcopy(self.io_handler)
             item.show()
-
+            items.append(item)
+        return items
 
     def save(self):
         self.storage.store()
@@ -56,7 +60,3 @@ class Group:
 
     def clear(self):
         self.storage.clear()
-        self.io_handler.info("Список очищен.")
-
-    def __len__(self):
-        return self.storage.size()

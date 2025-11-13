@@ -1,5 +1,7 @@
 {% extends "base.tpl" %}
 
+{% include "load_from_pickle.tpl" ignore missing %}
+
 {% block content %}
     {% for person in group %}
 {% include "item.tpl" ignore missing %}
