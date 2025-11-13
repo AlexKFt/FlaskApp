@@ -1,16 +1,15 @@
 from werkzeug.utils import redirect
 
 from app.storage.pickle_storage import PickleStorage
-from io_handlers.flask_handler import FlaskIOHandler
+from app.io_handlers.flask_handler import FlaskIOHandler
 
-from group import Group
+from app.group import Group
 
-from flask import Flask, request
-from flask import render_template
+from flask import render_template, Flask, request
 from flask import g
 
-from models.student import Student
-from models.leader import Leader
+from app.models.student import Student
+from app.models.leader import Leader
 
 app = Flask(__name__)
 
@@ -94,6 +93,3 @@ def load_from_pickle():
 @app.teardown_appcontext
 def teardown_book(ctx):
     get_group().storage.store()
-
-if __name__ == "__main__":
-    app.run(debug=True)

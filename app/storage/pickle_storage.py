@@ -1,11 +1,9 @@
 import pickle
 
-from app.storage.db_storage import selfpath
-
 bin_path = 'data/pickle/'
 
 class PickleStorage:
-    def __init__(self):
+    def __init__(self, group):
         try:
             self.load()
         except:

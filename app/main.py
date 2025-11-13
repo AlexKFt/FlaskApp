@@ -1,8 +1,6 @@
 from app.group import Group
 from app.io_handlers.console_handler import ConsoleIOHandler
 
-
-
 def main():
     group = Group(ConsoleIOHandler())
     def add_item():

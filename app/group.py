@@ -4,6 +4,7 @@ from app.io_handlers.io_handler import IOHandler
 from app.models.student import Student
 from app.models.leader import Leader
 from app.storage.db_storage import DBStorage
+from app.storage.pickle_storage import PickleStorage
 
 
 class Group:
