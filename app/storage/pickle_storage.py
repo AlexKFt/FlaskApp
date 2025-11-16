@@ -1,3 +1,4 @@
+import os
 import pickle
 
 bin_path = 'data/pickle/'
@@ -10,13 +11,15 @@ class PickleStorage:
             self.items = {}
             self.maxid = 0
 
-    def store(self):
-        with open(bin_path+"data.dat", "wb") as f:
-            pickle.dump((self.maxid, self.items), f)
-
     def load(self):
-        with open(bin_path+"data.dat", "rb") as f:
+        if not os.path.exists(bin_path):
+            os.mkdir(bin_path)
+        with open(bin_path + 'book.db', 'rb') as f:
             (self.maxid, self.items) = pickle.load(f)
+
+    def store(self):
+        with open(bin_path + 'book.db', 'wb') as f:
+            pickle.dump((self.maxid, self.items), f)
 
     def get_item(self, id):
         if id in self.items:

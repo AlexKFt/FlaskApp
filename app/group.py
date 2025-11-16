@@ -44,7 +44,7 @@ class Group:
         items = []
         for item in self.storage.get_items():
             item.io_handler = copy.deepcopy(self.io_handler)
-            item.show()
+            item.output()
             items.append(item)
         return items
 

@@ -1,4 +1,6 @@
+<p>
 {{person.io_handler.get_output()}}
+</p>
 {% set cls_id = 1 %}
 {%if person is instanceof('Leader')%}
     {% set cls_id = 2 %}

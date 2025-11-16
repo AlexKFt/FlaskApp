@@ -7,6 +7,7 @@ selfpath = 'data/sql/'
 
 class DBStorage:
     def __init__(self, group):
+        print(os.getcwd())
         self.group = group
         self.load()
 

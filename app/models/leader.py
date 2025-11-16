@@ -1,17 +1,18 @@
+from dataclasses import dataclass
+
 from app.models.student import Student
 
 
+@dataclass
 class Leader(Student):
-    def __init__(self, id=0, name="", age=0, group="", io_handler=None):
-        super().__init__(id, name, age, io_handler)
-        self.group = group
+    group: str = ""
 
     def input(self):
         super().input()
         self.group = self.io_handler.read("group")
 
-    def show(self):
-        super().show()
+    def output(self):
+        super().output()
         self.io_handler.write("Группа", self.group)
 
     def load(self, row):

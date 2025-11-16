@@ -1,16 +1,20 @@
+from dataclasses import dataclass
 
+from app.io_handlers.io_handler import IOHandler
+
+
+@dataclass
 class Student:
-    def __init__(self, id=0, name="", age=0, io_handler=None):
-        self.id = id
-        self.name = name
-        self.age = age
-        self.io_handler = io_handler
+    id: int = 0
+    name: str = ""
+    age: int = 0
+    io_handler: IOHandler = None
 
     def input(self):
         self.name = self.io_handler.read("name")
         self.age = int(self.io_handler.read("age"))
 
-    def show(self):
+    def output(self):
         self.io_handler.write("Id", self.id)
         self.io_handler.write("Имя", self.name)
         self.io_handler.write("Возраст", self.age)

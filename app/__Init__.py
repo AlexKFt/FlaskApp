@@ -1,15 +1,17 @@
+import copy
+
 from werkzeug.utils import redirect
 
-from app.storage.pickle_storage import PickleStorage
-from app.io_handlers.flask_handler import FlaskIOHandler
+from .storage.pickle_storage import PickleStorage
+from .io_handlers.flask_handler import FlaskIOHandler
 
-from app.group import Group
+from .group import Group
 
 from flask import render_template, Flask, request
 from flask import g
 
-from app.models.student import Student
-from app.models.leader import Leader
+from .models.student import Student
+from .models.leader import Leader
 
 app = Flask(__name__)
 
@@ -48,7 +50,6 @@ def show_form(id):
 def edit_form(cls_id, id):
     group = get_group()
     person = group.get_item(id)
-    person.io_handler = group.io_handler
     if cls_id == 1:
         return render_template("student_form.tpl", person=person)
     elif cls_id == 2:
@@ -60,7 +61,7 @@ def edit_form(cls_id, id):
 def edit_item():
     id = int(request.form.get("id"))
     group = get_group()
-    person =group.get_item(id)
+    person = group.get_item(id)
     person.input()
     group.edit(person)
     return redirect("/")
@@ -84,7 +85,7 @@ def add():
 @app.route("/load_from_pickle")
 def load_from_pickle():
     group = get_group()
-    storage = PickleStorage()
+    storage = PickleStorage(group)
     for item in storage.get_items():
         item.id = 0
         group.storage.add(item)

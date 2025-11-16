@@ -10,7 +10,7 @@ class FlaskIOHandler(IOHandler):
         return self.form.get(field, "")
 
     def write(self, title, value):
-        self.output.append(f"<p>{title}: {value}</p>")
+        self.output.append(f"{title}: {value}<br>")
 
     def info(self, message):
         return f"<p>info: {message}</p>"
