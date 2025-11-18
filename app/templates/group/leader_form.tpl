@@ -1,18 +1,19 @@
-{% extends "base.tpl" %}
+{% extends "group/base.tpl" %}
 
 {% block content %}
 
 {% if person.id != 0%}
-    <form action = '/edit' method=Post>
+    <form action = '{{selfurl}}/edit' method=Post>
 {% else %}
-    <form action = '/add' method=POST>
+    <form action = '{{selfurl}}/add' method=POST>
 {% endif %}
 
-<input type="hidden" name=obj_class value="1">
+<input type="hidden" name=obj_class value="2">
 
 <input type=hidden name=id value={{person.id}}>
 Имя:<input type=text name=name value={{person.name}}><br>
 Возраст:<input type=text name=age value={{person.age}}>
+Группа: <input type=text name=group value={{person.group}}>
 <br><input type=submit value="Ok">
 </form>
 

@@ -1,1 +1,0 @@
-<a href='/load_from_pickle'>Подгрузить данные из pickle</a>

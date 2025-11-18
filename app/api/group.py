@@ -1,6 +1,7 @@
 import copy
 
 from app.io_handlers.io_handler import IOHandler
+from app.io_handlers.rest_handler import RESTIOHandler
 from app.models.student import Student
 from app.models.leader import Leader
 from app.storage.db_storage import DBStorage
@@ -8,9 +9,10 @@ from app.storage.pickle_storage import PickleStorage
 
 
 class Group:
-    def __init__(self, io_handler: IOHandler):
+    def __init__(self, io_handler: IOHandler = None, rest_handler: RESTIOHandler = None):
         self.storage = DBStorage(self)
-        self.io_handler = None
+        self.io_handler = io_handler
+        self.rest_io = rest_handler
         self.set_io_handler(io_handler)
         self.classes = {
             "1": Student,

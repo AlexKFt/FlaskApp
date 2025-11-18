@@ -2,4 +2,4 @@
 <head>
 <title>Group</title>
 </head>
-<body><h1>Студенты:</h1>
+<body><body><a href="/">Группы</a>
