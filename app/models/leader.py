@@ -31,3 +31,8 @@ class Leader(Student):
 
     def __str__(self):
         return f"Староста \nИмя:{self.name}\nВозраст:{self.age}\nГрупп:{self.group}"
+
+    def __dict__(self):
+        base = super().__dict__()
+        base.update({'group': self.group})
+        return base

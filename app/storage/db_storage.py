@@ -40,6 +40,8 @@ class DBStorage:
         if id > 0:
             self.cursor.execute("select * from students where id=?", (id,))
             row = self.cursor.fetchone()
+            if not row:
+                return None
             item = self.select_type(row)
             item.load(row)
             return item

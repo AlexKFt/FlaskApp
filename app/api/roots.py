@@ -9,7 +9,6 @@ from app.storage.pickle_storage import PickleStorage
 from app.api.group import Group
 
 
-
 selfurl = 'group1'
 
 def get_group():
@@ -17,12 +16,17 @@ def get_group():
         g.group = Group(io_handler=FlaskIOHandler(request))
     return g.group
 
+def get_url_root():
+    return '/' + request.url_rule.rule.split('/')[1]
 
 @bp.route("/")
 def index():
     group = get_group()
     group.show_items()
-    return render_template("group/group.tpl", group=group.show_items(), selfurl=selfurl)
+    print(request.url_rule)
+    print(request.url_rule.rule.split('/'))
+    return render_template("group/group.tpl", group=group.show_items(), selfurl=get_url_root())
+
 
 
 @bp.route("/showform/<int:id>")
@@ -30,23 +34,23 @@ def show_form(id):
     group = get_group()
     if id == 1:
         person = Student(io_handler=group.io_handler)
-        return render_template("student_form.tpl", person=person)
+        return render_template("group/student_form.tpl", person=person, selfurl=get_url_root())
     elif id == 2:
         worker = Leader(io_handler=group.io_handler)
-        return render_template("leader_form.tpl", person=worker)
+        return render_template("group/leader_form.tpl", person=worker, selfurl=get_url_root())
     else:
-        return render_template("group.tpl", group=group.get_items())
+        return render_template("group/group.tpl", group=group.get_items(), selfurl=get_url_root())
 
 @bp.route("/edit_form/<int:cls_id>/<int:id>")
 def edit_form(cls_id, id):
     group = get_group()
     person = group.get_item(id)
     if cls_id == 1:
-        return render_template("student_form.tpl", person=person)
+        return render_template("group/student_form.tpl", person=person, selfurl=get_url_root())
     elif cls_id == 2:
-        return render_template("leader_form.tpl", person=person)
+        return render_template("group/leader_form.tpl", person=person, selfurl=get_url_root())
     else:
-        return render_template("group.tpl", group=group.get_items())
+        return render_template("group/group.tpl", group=group.get_items(), selfurl=get_url_root())
 
 @bp.route("/edit", methods=['POST'])
 def edit_item():
@@ -55,13 +59,13 @@ def edit_item():
     person = group.get_item(id)
     person.input()
     group.edit(person)
-    return redirect("/")
+    return redirect(get_url_root())
 
 @bp.route("/delete/<int:id>")
 def delete_item(id):
     group = get_group()
     group.delete(id)
-    return redirect("/")
+    return redirect(get_url_root())
 
 
 @bp.route("/add", methods=['POST'])
@@ -71,7 +75,7 @@ def add():
     cls = group.classes.get(type)
     group.add(cls)
 
-    return redirect("/")
+    return redirect(get_url_root())
 
 @bp.route("/load_from_pickle")
 def load_from_pickle():
@@ -80,7 +84,7 @@ def load_from_pickle():
     for item in storage.get_items():
         item.id = 0
         group.storage.add(item)
-    return redirect("/")
+    return redirect(get_url_root())
 
 @bp.teardown_request
 def teardown_book(ctx):
@@ -92,7 +96,7 @@ def apibook():
     group = get_group()
     ids = []
     for item in group.get_items():
-        ids.append([item.id, item.name])
+        ids.append(item.__dict__())
     return jsonify({'ids': ids})
 
 
@@ -119,7 +123,7 @@ def apiget(id):
     group = get_group()
     item = group.get_item(id)
     if item:
-        return jsonify({'id': item.id, 'name': item.name})
+        return jsonify(item.__dict__())
     else:
         return jsonify({'error': 'item not found'})
 
@@ -127,8 +131,11 @@ def apiget(id):
 @bp.route("/api/<int:id>", methods=['PUT'])
 def apiset(id):
     group = get_group()
+    item = group.get_item(id)
+    if not item:
+        return jsonify({'error': 'item not found'})
+
     cls_id = request.json.get('cls_id')
-    item = None
     if cls_id == 1:
         item = Student(io_handler=RESTIOHandler(request))
     elif cls_id == 2:

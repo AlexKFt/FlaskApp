@@ -5,6 +5,6 @@
 {%if person is instanceof('Leader')%}
     {% set cls_id = 2 %}
 {% endif %}
-<a href="/edit_form/{{cls_id}}/{{person.id}}">Edit</a>
-<a href="/delete/{{person.id}}">Delete</a>
+<a href="{{selfurl}}/edit_form/{{cls_id}}/{{person.id}}">Edit</a>
+<a href="{{selfurl}}/delete/{{person.id}}">Delete</a>
 <br><br>

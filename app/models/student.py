@@ -11,6 +11,7 @@ class Student:
     io_handler: IOHandler = None
 
     def input(self):
+        self.id = int(self.io_handler.read("id"))
         self.name = self.io_handler.read("name")
         self.age = int(self.io_handler.read("age"))
 
@@ -34,3 +35,6 @@ class Student:
 
     def __str__(self):
         return f"Студент \nИмя:{self.name}\nВозраст:{self.age}"
+
+    def __dict__(self):
+        return {'id': self.id, 'name': self.name, 'age': self.age}
