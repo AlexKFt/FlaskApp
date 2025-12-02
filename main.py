@@ -1,8 +1,10 @@
 from app.api.group import Group
 from app.io_handlers.console_handler import ConsoleIOHandler
+from app.storage.rest_storage import RestStorage
+
 
 def main():
-    group = Group(ConsoleIOHandler())
+    group = Group(RestStorage("group1"), ConsoleIOHandler())
     def add_item():
         for type, value in group.classes.items():
             print(f"{type}: {value.__name__}")

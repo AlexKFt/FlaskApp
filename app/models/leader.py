@@ -1,11 +1,17 @@
 from dataclasses import dataclass
 
+from app.io_handlers.io_handler import IOHandler
 from app.models.student import Student
 
 
 @dataclass
 class Leader(Student):
     group: str = ""
+
+    def get_data(self):
+        d = super().get_data()
+        d.update({'cls_id': 2})
+        return d
 
     def input(self):
         super().input()
@@ -32,7 +38,8 @@ class Leader(Student):
     def __str__(self):
         return f"Староста \nИмя:{self.name}\nВозраст:{self.age}\nГрупп:{self.group}"
 
-    def __dict__(self):
-        base = super().__dict__()
+    def to_dict(self):
+        base = super().to_dict()
+        base.update({'type': 'leader'})
         base.update({'group': self.group})
         return base

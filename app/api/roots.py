@@ -1,3 +1,5 @@
+import copy
+
 from flask import jsonify, request, g, render_template, redirect
 
 from app.api import bp
@@ -5,6 +7,7 @@ from app.io_handlers.flask_handler import FlaskIOHandler
 from app.io_handlers.rest_handler import RESTIOHandler
 from app.models.leader import Leader
 from app.models.student import Student
+from app.storage.db_storage import DBStorage
 from app.storage.pickle_storage import PickleStorage
 from app.api.group import Group
 
@@ -13,7 +16,7 @@ selfurl = 'group1'
 
 def get_group():
     if 'group' not in g:
-        g.group = Group(io_handler=FlaskIOHandler(request))
+        g.group = Group(DBStorage("group"),io_handler=FlaskIOHandler(request))
     return g.group
 
 def get_url_root():
@@ -57,6 +60,8 @@ def edit_item():
     id = int(request.form.get("id"))
     group = get_group()
     person = group.get_item(id)
+    person.io_handler = copy.deepcopy(group.io_handler)
+    person.id = id
     person.input()
     group.edit(person)
     return redirect(get_url_root())
@@ -96,7 +101,7 @@ def apibook():
     group = get_group()
     ids = []
     for item in group.get_items():
-        ids.append(item.__dict__())
+        ids.append(item.to_dict())
     return jsonify({'ids': ids})
 
 
@@ -123,7 +128,7 @@ def apiget(id):
     group = get_group()
     item = group.get_item(id)
     if item:
-        return jsonify(item.__dict__())
+        return jsonify(item.to_dict())
     else:
         return jsonify({'error': 'item not found'})
 
@@ -142,6 +147,7 @@ def apiset(id):
         item = Leader(io_handler=RESTIOHandler(request))
     else:
         return jsonify({'error': 'Invalid cls_id'})
+    item.id = id
     item.input()
     group.storage.edit(item)
     return ''

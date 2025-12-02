@@ -4,7 +4,7 @@ import pickle
 bin_path = 'data/pickle/'
 
 class PickleStorage:
-    def __init__(self, group):
+    def __init__(self, name):
         try:
             self.load()
         except:
@@ -14,11 +14,11 @@ class PickleStorage:
     def load(self):
         if not os.path.exists(bin_path):
             os.mkdir(bin_path)
-        with open(bin_path + 'book.db', 'rb') as f:
+        with open(bin_path + 'group.db', 'rb') as f:
             (self.maxid, self.items) = pickle.load(f)
 
     def store(self):
-        with open(bin_path + 'book.db', 'wb') as f:
+        with open(bin_path + 'group.db', 'wb') as f:
             pickle.dump((self.maxid, self.items), f)
 
     def get_item(self, id):

@@ -6,9 +6,9 @@ from app.models.student import Student
 selfpath = 'data/sql/'
 
 class DBStorage:
-    def __init__(self, group):
+    def __init__(self, name):
         print(os.getcwd())
-        self.group = group
+        self.group = None
         self.load()
 
     def select_type(self, row):

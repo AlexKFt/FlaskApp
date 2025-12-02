@@ -10,8 +10,16 @@ class Student:
     age: int = 0
     io_handler: IOHandler = None
 
+    def set_data(self, data):
+        if data:
+            self.__dict__.update(data)
+
+    def get_data(self):
+        d = self.__dict__
+        d.update({'cls_id': 1})
+        return d
+
     def input(self):
-        self.id = int(self.io_handler.read("id"))
         self.name = self.io_handler.read("name")
         self.age = int(self.io_handler.read("age"))
 
@@ -36,5 +44,5 @@ class Student:
     def __str__(self):
         return f"Студент \nИмя:{self.name}\nВозраст:{self.age}"
 
-    def __dict__(self):
-        return {'id': self.id, 'name': self.name, 'age': self.age}
+    def to_dict(self):
+        return {'id': self.id, 'name': self.name, 'age': self.age, 'type': 'student'}

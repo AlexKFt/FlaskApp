@@ -9,8 +9,9 @@ from app.storage.pickle_storage import PickleStorage
 
 
 class Group:
-    def __init__(self, io_handler: IOHandler = None, rest_handler: RESTIOHandler = None):
-        self.storage = DBStorage(self)
+    def __init__(self, storage, io_handler: IOHandler = None, rest_handler: RESTIOHandler = None):
+        self.storage = storage
+        storage.group = self
         self.io_handler = io_handler
         self.rest_io = rest_handler
         self.set_io_handler(io_handler)
@@ -23,7 +24,8 @@ class Group:
         self.io_handler = io_handler
 
     def add(self, cls):
-        person = cls(io_handler=self.io_handler)
+        person = cls()
+        person.io_handler = copy.deepcopy(self.io_handler)
         person.input()
         self.storage.add(person)
 
